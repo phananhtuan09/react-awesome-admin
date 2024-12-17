@@ -1,9 +1,8 @@
-import React from 'react';
 import { Outlet } from 'react-router';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/app-sidebar';
+import AppSidebar from '@/components/appSidebar';
 
-const MainLayout: React.FC = () => {
+const MainLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />

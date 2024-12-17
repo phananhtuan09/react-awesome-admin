@@ -4,6 +4,7 @@ import LazyWrapper from '@/components/ui/lazyWrapper';
 import PATH from '@/constants/path';
 
 const HomePage = LazyWrapper(lazy(() => import('@/pages/home')));
+const ProfilePage = LazyWrapper(lazy(() => import('@/pages/profile')));
 const MainLayout = LazyWrapper(lazy(() => import('@/layout/mainLayout')));
 
 const mainRoutes: RouteObject = {
@@ -13,6 +14,10 @@ const mainRoutes: RouteObject = {
     {
       path: PATH.HOME,
       element: createElement(HomePage),
+    },
+    {
+      path: PATH.PROFILE,
+      element: createElement(ProfilePage),
     },
   ],
 };
