@@ -21,7 +21,8 @@ import {
 } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
 import isObject from 'lodash/isObject';
-import PATH from '@/constants/path';
+import { ROOT_PATH, PATH } from '@/constants/path';
+
 import { useNavigate } from 'react-router';
 
 // Menu items.
@@ -91,7 +92,7 @@ const menuGroups: MenuGroups[] = [
         subItems: [
           {
             title: 'Home',
-            url: PATH.HOME,
+            url: ROOT_PATH,
           },
         ],
       },
@@ -102,7 +103,7 @@ const menuGroups: MenuGroups[] = [
     menu: [
       {
         title: 'Profile',
-        url: PATH.HOME,
+        url: ROOT_PATH,
         icon: Inbox,
       },
     ],
@@ -112,7 +113,7 @@ const menuGroups: MenuGroups[] = [
 const SidebarHeaderComp = () => {
   const navigate = useNavigate();
   const HandleNavigateHome = () => {
-    navigate(PATH.HOME);
+    navigate(ROOT_PATH);
   };
   return (
     <SidebarHeader>

@@ -2,12 +2,17 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Route } from '@/types/common';
 import { GenerateKeyRoutes } from '@/types/mappedTypes';
+import { ROOT_PATH } from '@/constants/path';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function generatePath<T extends ReadonlyArray<Route>>(
+function addPrefix(prefix: string, value: string): string {
+  return prefix ? `${prefix}_${value}` : value;
+}
+
+export function generateFullPath<T extends ReadonlyArray<Route>>(
   paths: T,
   prefixPath = '',
   prefixName = '',
@@ -18,12 +23,37 @@ export function generatePath<T extends ReadonlyArray<Route>>(
   }
 
   paths.forEach((path) => {
-    const pathName = prefixName ? `${prefixName}_${path.name}` : path.name;
+    const pathName = addPrefix(prefixName, path.name);
     const newPath = `${prefixPath}/${path.path}`;
     result[pathName as GenerateKeyRoutes<T>] = newPath;
 
     if (path.subRoutes) {
-      Object.assign(result, generatePath(path.subRoutes, newPath, pathName));
+      Object.assign(
+        result,
+        generateFullPath(path.subRoutes, newPath, pathName),
+      );
+    }
+  });
+
+  return result;
+}
+
+export function generateRoutePath<T extends ReadonlyArray<Route>>(
+  paths: T,
+  prefixName = '',
+): { [K in GenerateKeyRoutes<T>]: string } {
+  const result = {} as { [K in GenerateKeyRoutes<T>]: string };
+  if (!Array.isArray(paths)) {
+    return result;
+  }
+
+  paths.forEach((path) => {
+    const pathName = addPrefix(prefixName, path.name);
+    const newPath = `${path.path || ROOT_PATH}${path.suffixPath ?? ''}`;
+    result[pathName as GenerateKeyRoutes<T>] = newPath;
+
+    if (path.subRoutes) {
+      Object.assign(result, generateRoutePath(path.subRoutes, pathName));
     }
   });
 

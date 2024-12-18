@@ -1,9 +1,9 @@
-import { generatePath } from '@/lib/utils';
-import { Route } from '@/types/common';
+import { generateFullPath, generateRoutePath } from '@/lib/utils';
 
 const ROOT_PATH = '/';
+const NOT_FOUND_PATH = '*';
 
-const defineRoutes = [
+const routeSettings = [
   {
     path: '',
     name: 'ROOT',
@@ -17,17 +17,17 @@ const defineRoutes = [
     name: 'REGISTER',
   },
   {
+    path: 'home',
+    name: 'HOME',
+  },
+  {
+    path: 'profile',
+    name: 'PROFILE',
+  },
+  {
     path: 'admin',
     name: 'ADMIN',
     subRoutes: [
-      {
-        path: 'home',
-        name: 'HOME',
-      },
-      {
-        path: 'profile',
-        name: 'PROFILE',
-      },
       {
         path: 'users',
         name: 'USER',
@@ -37,8 +37,9 @@ const defineRoutes = [
             name: 'ADD_USER',
           },
           {
-            path: 'edit/:id',
+            path: 'edit',
             name: 'EDIT_USER',
+            suffixPath: '/:id',
           },
         ],
       },
@@ -46,25 +47,10 @@ const defineRoutes = [
   },
 ] as const;
 
-function generateAbsolutePath(
-  routes: ReadonlyArray<Route>,
-  parentPath: string = '',
-): Record<string, string> {
-  return routes.reduce((acc, route) => {
-    const currentPath = `${parentPath}/${route.path}`.replace(/\/+/g, '/'); // Ensure no double slashes
-    acc[route.name] = currentPath;
-
-    if (route.subRoutes) {
-      Object.assign(acc, generateAbsolutePath(route.subRoutes, currentPath));
-    }
-
-    return acc;
-  }, {} as Record<string, string>);
-}
-
 // used for define routes
-const ROUTE_CONFIG = generateAbsolutePath(defineRoutes);
-// used for components ex redirect, link
-const PATH = generatePath(defineRoutes);
+const ROUTE_CONFIG = generateRoutePath(routeSettings);
 
-export { PATH, ROUTE_CONFIG, ROOT_PATH };
+// used for components ex redirect, link
+const PATH = generateFullPath(routeSettings);
+
+export { PATH, ROUTE_CONFIG, ROOT_PATH, NOT_FOUND_PATH };
