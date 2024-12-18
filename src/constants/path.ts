@@ -1,60 +1,9 @@
-const PATH = {
-  // public routes
-  LOGIN: 'login',
-  REGISTER: 'register',
-  NOT_FOUND: '404',
-  // private routes
-  ROOT: '/',
-  HOME: 'home',
-  PROFILE: 'profile',
-};
+import { generatePath } from '@/lib/utils';
+import { Route } from '@/types/common';
 
-type Route = {
-  path: string;
-  name: string;
-  subRoutes?: ReadonlyArray<Route>;
-};
+const ROOT_PATH = '/';
 
-type GenerateKeys<
-  T extends ReadonlyArray<Route>,
-  Prefix extends string = '',
-> = {
-  [K in keyof T]: T[K] extends Route
-    ? T[K]['subRoutes'] extends ReadonlyArray<Route>
-      ? // Include current key and recursively generate keys for subRoutes
-        | `${Prefix}${T[K]['name']}`
-          | GenerateKeys<T[K]['subRoutes'], `${Prefix}${T[K]['name']}_`>
-      : // If no subRoutes, only include the current key
-        `${Prefix}${T[K]['name']}`
-    : never;
-}[number];
-
-function generatePath<T extends ReadonlyArray<Route>>(
-  paths: T,
-  prefixPath = '',
-  prefixName = '',
-): { [K in GenerateKeys<T>]: string } {
-  const result = {} as { [K in GenerateKeys<T>]: string };
-
-  if (!Array.isArray(paths)) {
-    return result;
-  }
-
-  paths.forEach((path) => {
-    const pathName = prefixName ? `${prefixName}_${path.name}` : path.name;
-    const newPath = `${prefixPath}/${path.path}`;
-    result[pathName as GenerateKeys<T>] = newPath;
-
-    if (path.subRoutes) {
-      Object.assign(result, generatePath(path.subRoutes, newPath, pathName));
-    }
-  });
-
-  return result;
-}
-
-// Your route definition
-const definePath = [
+const defineRoutes = [
   {
     path: '',
     name: 'ROOT',
@@ -81,7 +30,7 @@ const definePath = [
       },
       {
         path: 'users',
-        name: 'USERS',
+        name: 'USER',
         subRoutes: [
           {
             path: 'add',
@@ -97,9 +46,25 @@ const definePath = [
   },
 ] as const;
 
-// Generate the PATH object with dynamic typing
-const PATH2 = generatePath(definePath);
+function generateAbsolutePath(
+  routes: ReadonlyArray<Route>,
+  parentPath: string = '',
+): Record<string, string> {
+  return routes.reduce((acc, route) => {
+    const currentPath = `${parentPath}/${route.path}`.replace(/\/+/g, '/'); // Ensure no double slashes
+    acc[route.name] = currentPath;
 
-export { PATH2 };
+    if (route.subRoutes) {
+      Object.assign(acc, generateAbsolutePath(route.subRoutes, currentPath));
+    }
 
-export default PATH;
+    return acc;
+  }, {} as Record<string, string>);
+}
+
+// used for define routes
+const ROUTE_CONFIG = generateAbsolutePath(defineRoutes);
+// used for components ex redirect, link
+const PATH = generatePath(defineRoutes);
+
+export { PATH, ROUTE_CONFIG, ROOT_PATH };
