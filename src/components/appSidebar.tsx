@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search } from 'lucide-react';
+import { Home, Inbox } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,47 +12,16 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuAction,
+  SidebarMenuSubButton,
 } from '@/components/ui/sidebar';
 import logo from '@/assets/images/logo.png';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown } from 'lucide-react';
 import isObject from 'lodash/isObject';
 import { ROOT_PATH, PATH } from '@/constants/path';
 
-import { useNavigate } from 'react-router';
-
-// Menu items.
-// const items = [
-//   {
-//     title: 'Home',
-//     url: '#',
-//     icon: Home,
-//   },
-//   {
-//     title: 'Inbox',
-//     url: '#',
-//     icon: Inbox,
-//   },
-//   {
-//     title: 'Calendar',
-//     url: '#',
-//     icon: Calendar,
-//   },
-//   {
-//     title: 'Search',
-//     url: '#',
-//     icon: Search,
-//   },
-//   {
-//     title: 'Settings',
-//     url: '#',
-//     icon: Settings,
-//   },
-// ];
+import { useNavigate, NavLink } from 'react-router';
+import { useCallback } from 'react';
 
 interface SubItem {
   title: string;
@@ -92,7 +61,7 @@ const menuGroups: MenuGroups[] = [
         subItems: [
           {
             title: 'Home',
-            url: ROOT_PATH,
+            url: PATH.HOME,
           },
         ],
       },
@@ -103,7 +72,7 @@ const menuGroups: MenuGroups[] = [
     menu: [
       {
         title: 'Profile',
-        url: ROOT_PATH,
+        url: PATH.PROFILE,
         icon: Inbox,
       },
     ],
@@ -112,12 +81,12 @@ const menuGroups: MenuGroups[] = [
 
 const SidebarHeaderComp = () => {
   const navigate = useNavigate();
-  const HandleNavigateHome = () => {
+  const HandleNavigateHome = useCallback(() => {
     navigate(ROOT_PATH);
-  };
+  }, [navigate]);
   return (
     <SidebarHeader>
-      <div className="flex flex-wrap items-center" onClick={HandleNavigateHome}>
+      <div className="flex flex-wrap items-center cursor-pointer" onClick={HandleNavigateHome}>
         <img src={logo} className="w-14 h-14 object-cover" />
         <span>Awesome Admin</span>
       </div>
@@ -125,40 +94,30 @@ const SidebarHeaderComp = () => {
   );
 };
 
-const SidebarMenuButtonComp = ({
-  item,
-  isCollapsible = false,
-}: {
-  item: MenuItem;
-  isCollapsible?: boolean;
-}) => {
+const SidebarMenuButtonComp = ({ item, isCollapsible = false }: { item: MenuItem; isCollapsible?: boolean }) => {
   if (isCollapsible) {
     return (
       <CollapsibleTrigger asChild>
-        <SidebarMenuButton asChild>
-          <a href={item.url}>
+        <SidebarMenuButton asChild className="cursor-pointer">
+          <span>
             {item.icon && <item.icon />}
-            <span>{item.title}</span>
-          </a>
+            {item.title}
+          </span>
         </SidebarMenuButton>
       </CollapsibleTrigger>
     );
   }
   return (
     <SidebarMenuButton asChild>
-      <a href={item.url}>
+      <NavLink to={item.url}>
         {item.icon && <item.icon />}
         <span>{item.title}</span>
-      </a>
+      </NavLink>
     </SidebarMenuButton>
   );
 };
 
-const SidebarSidebarMenuSubItemComp = ({
-  subItems,
-}: {
-  subItems?: SubItem[];
-}) => {
+const SidebarSidebarMenuSubItemComp = ({ subItems }: { subItems?: SubItem[] }) => {
   if (!Array.isArray(subItems)) {
     return null;
   }
@@ -167,9 +126,11 @@ const SidebarSidebarMenuSubItemComp = ({
       {subItems.map((subItem) => {
         return (
           <SidebarMenuSubItem key={subItem.title}>
-            <a href={subItem.url}>
-              <span>{subItem.title}</span>
-            </a>
+            <SidebarMenuSubButton asChild>
+              <NavLink to={subItem.url}>
+                <span>{subItem.title}</span>
+              </NavLink>
+            </SidebarMenuSubButton>
           </SidebarMenuSubItem>
         );
       })}
@@ -186,19 +147,14 @@ const SidebarMenuComp = ({ menu }: SidebarMenuCompProps) => {
       {menu.map((item) => {
         if (item.isCollapsible) {
           return (
-            <Collapsible defaultOpen className="group/collapsible">
+            <Collapsible defaultOpen className="group/collapsible" key={item.title}>
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuAction>
                   <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </SidebarMenuAction>
-                <SidebarMenuButtonComp
-                  item={item}
-                  isCollapsible={true}
-                ></SidebarMenuButtonComp>
+                <SidebarMenuButtonComp item={item} isCollapsible={true}></SidebarMenuButtonComp>
                 <CollapsibleContent>
-                  <SidebarSidebarMenuSubItemComp
-                    subItems={item.subItems}
-                  ></SidebarSidebarMenuSubItemComp>
+                  <SidebarSidebarMenuSubItemComp subItems={item.subItems}></SidebarSidebarMenuSubItemComp>
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
@@ -207,9 +163,7 @@ const SidebarMenuComp = ({ menu }: SidebarMenuCompProps) => {
         return (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButtonComp item={item}></SidebarMenuButtonComp>
-            <SidebarSidebarMenuSubItemComp
-              subItems={item.subItems}
-            ></SidebarSidebarMenuSubItemComp>
+            <SidebarSidebarMenuSubItemComp subItems={item.subItems}></SidebarSidebarMenuSubItemComp>
           </SidebarMenuItem>
         );
       })}
@@ -239,7 +193,7 @@ const SidebarContentComp = () => {
   return (
     <SidebarContent>
       {menuGroups.map((group) => (
-        <SidebarGroupComp group={group}></SidebarGroupComp>
+        <SidebarGroupComp group={group} key={group.title}></SidebarGroupComp>
       ))}
     </SidebarContent>
   );
