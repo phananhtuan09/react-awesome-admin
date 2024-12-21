@@ -7,14 +7,10 @@ const HomePage = LazyWrapper(lazy(() => import('@/pages/home')));
 const ProfilePage = LazyWrapper(lazy(() => import('@/pages/profile')));
 const AdminPage = LazyWrapper(lazy(() => import('@/pages/admin')));
 const AdminUserPage = LazyWrapper(lazy(() => import('@/pages/admin/users')));
-const AdminUserAddPage = LazyWrapper(
-  lazy(() => import('@/pages/admin/users/add')),
-);
-const AdminUserEditPage = LazyWrapper(
-  lazy(() => import('@/pages/admin/users/edit')),
-);
+const AdminUserAddPage = LazyWrapper(lazy(() => import('@/pages/admin/users/add')));
+const AdminUserEditPage = LazyWrapper(lazy(() => import('@/pages/admin/users/edit')));
 
-const MainLayout = LazyWrapper(lazy(() => import('@/layout/mainLayout')));
+const MainLayout = LazyWrapper(lazy(() => import('@/layouts/mainLayout')));
 
 console.log({ PATH, ROUTE_CONFIG, ROOT_PATH });
 

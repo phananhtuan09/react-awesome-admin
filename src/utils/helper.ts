@@ -28,10 +28,7 @@ export function generateFullPath<T extends ReadonlyArray<Route>>(
     result[pathName as GenerateKeyRoutes<T>] = newPath;
 
     if (path.subRoutes) {
-      Object.assign(
-        result,
-        generateFullPath(path.subRoutes, newPath, pathName),
-      );
+      Object.assign(result, generateFullPath(path.subRoutes, newPath, pathName));
     }
   });
 

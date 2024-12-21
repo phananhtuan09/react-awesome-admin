@@ -1,4 +1,4 @@
-import { generateFullPath, generateRoutePath } from '@/lib/utils';
+import { generateFullPath, generateRoutePath } from '@/utils/helper';
 
 const ROOT_PATH = '/';
 const NOT_FOUND_PATH = '*';
