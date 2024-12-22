@@ -16,7 +16,7 @@ function ModeToggle() {
     <>
       <button
         type="button"
-        className="group-data-[theme=dark]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200"
+        className="group-data-[theme=dark]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200 -mr-3"
         data-theme-click-value="dark"
         onClick={changeTheme}
       >
@@ -26,7 +26,7 @@ function ModeToggle() {
       </button>
       <button
         type="button"
-        className="group-data-[theme=light]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200"
+        className="group-data-[theme=light]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200 -mr-3"
         data-theme-click-value="light"
         onClick={changeTheme}
       >
