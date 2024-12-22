@@ -1,37 +1,41 @@
 import { Moon, Sun } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdownMenu';
-import { useTheme } from '@/components/theme/themeProvider';
+import { Theme, useTheme } from '@/components/theme/themeProvider';
 
-export function ModeToggle() {
+function ModeToggle() {
   const { setTheme } = useTheme();
 
+  const changeTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const newTheme = event.currentTarget.getAttribute('data-theme-click-value');
+    if (newTheme) {
+      setTheme(newTheme as Theme);
+    }
+  };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <button
+        type="button"
+        className="group-data-[theme=dark]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200"
+        data-theme-click-value="dark"
+        onClick={changeTheme}
+      >
+        <span className="inline-flex shrink-0 justify-center items-center size-9">
+          <Moon />
+        </span>
+      </button>
+      <button
+        type="button"
+        className="group-data-[theme=light]:hidden block font-medium rounded-full hover:bg-accent hover:text-accent-foreground focus:outline-none focus:bg-gray-200"
+        data-theme-click-value="light"
+        onClick={changeTheme}
+      >
+        <span className="inline-flex shrink-0 justify-center items-center size-9">
+          <Sun />
+        </span>
+      </button>
+    </>
   );
 }
+
+export default ModeToggle;
