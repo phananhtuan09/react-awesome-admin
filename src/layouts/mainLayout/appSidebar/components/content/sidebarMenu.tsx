@@ -8,7 +8,6 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { ChevronDown } from 'lucide-react';
-import { memo } from 'react';
 import { NavLink } from 'react-router';
 import { MenuItem, SubItem } from '../../types';
 import SidebarMenuButtonComp from './sidebarMenuButton';
@@ -21,7 +20,7 @@ interface SidebarSidebarMenuSubItemCompProps {
   subItems?: SubItem[];
 }
 
-const SidebarSidebarMenuSubItemComp = memo(({ subItems }: SidebarSidebarMenuSubItemCompProps) => {
+const SidebarSidebarMenuSubItemComp = ({ subItems }: SidebarSidebarMenuSubItemCompProps) => {
   if (!Array.isArray(subItems)) {
     return null;
   }
@@ -40,7 +39,7 @@ const SidebarSidebarMenuSubItemComp = memo(({ subItems }: SidebarSidebarMenuSubI
       })}
     </SidebarMenuSub>
   );
-});
+};
 
 const SidebarMenuComp = ({ menu }: SidebarMenuCompProps) => {
   if (!Array.isArray(menu)) {
@@ -75,4 +74,4 @@ const SidebarMenuComp = ({ menu }: SidebarMenuCompProps) => {
   );
 };
 
-export default memo(SidebarMenuComp);
+export default SidebarMenuComp;

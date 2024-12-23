@@ -1,7 +1,6 @@
 import { CollapsibleTrigger } from '@/components/ui/collapsible';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { NavLink } from 'react-router';
-import { memo } from 'react';
 import { MenuItem } from '../../types';
 
 interface SidebarMenuButtonCompProps {
@@ -32,4 +31,4 @@ const SidebarMenuButtonComp = ({ item, isCollapsible = false }: SidebarMenuButto
   );
 };
 
-export default memo(SidebarMenuButtonComp);
+export default SidebarMenuButtonComp;

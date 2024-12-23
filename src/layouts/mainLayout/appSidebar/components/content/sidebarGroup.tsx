@@ -2,7 +2,6 @@ import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel } from '@/componen
 import isObject from 'lodash/isObject';
 import { MenuGroups } from '../../types';
 import SidebarMenuComp from './sidebarMenu';
-import { memo } from 'react';
 
 interface SidebarGroupCompProps {
   group: MenuGroups;
@@ -23,4 +22,4 @@ const SidebarGroupComp = ({ group }: SidebarGroupCompProps) => {
   );
 };
 
-export default memo(SidebarGroupComp);
+export default SidebarGroupComp;
