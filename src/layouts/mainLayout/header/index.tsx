@@ -4,6 +4,7 @@ import ModeToggle from '@/components/theme/modeToggle';
 import AvatarIcon from './components/avatarIcon';
 import BreadcrumbHeader from './components/breadcrumb';
 import NotificationIcon from './components/notificationIcon';
+import LangueIcon from './components/langueIcon';
 
 const Header = () => {
   return (
@@ -15,6 +16,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center justify-center gap-4">
+        <LangueIcon />
         <ModeToggle />
         <NotificationIcon />
         <AvatarIcon />
