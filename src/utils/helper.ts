@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { Route } from '@/types/common';
 import { GenerateKeyRoutes } from '@/types/mappedTypes';
 import { ROOT_PATH } from '@/constants/path';
+import isObject from 'lodash/isObject';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,4 +56,16 @@ export function generateRoutePath<T extends ReadonlyArray<Route>>(
   });
 
   return result;
+}
+
+export function convertKeysToString(obj: unknown): unknown {
+  if (Array.isArray(obj)) {
+    return obj.map(convertKeysToString);
+  } else if (isObject(obj)) {
+    return Object.entries(obj).reduce<Record<string, unknown>>((acc, [key, value]) => {
+      acc[String(key)] = convertKeysToString(value);
+      return acc;
+    }, {});
+  }
+  return obj;
 }

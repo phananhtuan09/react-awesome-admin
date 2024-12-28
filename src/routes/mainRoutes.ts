@@ -1,7 +1,7 @@
 import { RouteObject } from 'react-router';
 import { lazy, createElement } from 'react';
 import LazyWrapper from '@/components/ui/lazyWrapper';
-import { PATH, ROUTE_CONFIG, ROOT_PATH } from '@/constants/path';
+import { ROUTE_CONFIG } from '@/constants/path';
 
 const HomePage = LazyWrapper(lazy(() => import('@/pages/home')));
 const ProfilePage = LazyWrapper(lazy(() => import('@/pages/profile')));
@@ -11,8 +11,6 @@ const AdminUserAddPage = LazyWrapper(lazy(() => import('@/pages/admin/users/add'
 const AdminUserEditPage = LazyWrapper(lazy(() => import('@/pages/admin/users/edit')));
 
 const MainLayout = LazyWrapper(lazy(() => import('@/layouts/mainLayout')));
-
-console.log({ PATH, ROUTE_CONFIG, ROOT_PATH });
 
 const mainRoutes: RouteObject = {
   path: ROUTE_CONFIG.ROOT,

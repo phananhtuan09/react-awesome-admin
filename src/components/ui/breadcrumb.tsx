@@ -33,6 +33,20 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWitho
 );
 BreadcrumbItem.displayName = 'BreadcrumbItem';
 
+const BreadcrumbLabel = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<'span'> & {
+    title: string;
+  }
+>(({ title, className, ...props }, ref) => {
+  return (
+    <span ref={ref} className={cn('font-normal', className)} {...props}>
+      {title}
+    </span>
+  );
+});
+BreadcrumbLabel.displayName = 'BreadcrumbLabel';
+
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
   React.ComponentPropsWithoutRef<'a'> & {
@@ -70,7 +84,7 @@ const BreadcrumbEllipsis = ({ className, ...props }: React.ComponentProps<'span'
   <span
     role="presentation"
     aria-hidden="true"
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
+    className={cn('flex h-9 w-9 items-center justify-center cursor-default', className)}
     {...props}
   >
     <MoreHorizontal className="h-4 w-4" />
@@ -87,4 +101,5 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
+  BreadcrumbLabel,
 };
